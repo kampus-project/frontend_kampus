@@ -31,26 +31,9 @@ function StudentPage() {
         },
     });
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const [jwt, setJwt] = useLocalState('', 'jwt')
 
-    const [studentsData, setStudentsData] = useState([]);
 
-    useEffect(() => {
-        fetch(`${backendUrl}/api/v1/student/getAllStudents`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization" : 'Bearer ' + jwt,
-            },
-            method: "get",
-        })
-            .then(response => {
-                response.json(),
-                console.log(response)
-            })
-            .then(result => setStudentsData(result))
-            .catch(error => console.error(error));
-    }, []);
+
 
 
     return (
