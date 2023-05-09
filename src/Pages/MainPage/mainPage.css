@@ -1,0 +1,130 @@
+.content-container{
+    width: 100%;
+    max-width: 1700px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+.tab-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 900px;
+    width: 100%;
+
+    margin-left: auto;
+    margin-right: 10px;
+    margin-top: 30px;
+}
+
+.tab-item1{
+    width: 100%;
+    background-color: #F5F5F5;
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+    border-radius:10px 0 0 10px ;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tab-item2{
+    width: 100%;
+    background-color: #F5F5F5;
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tab-item3{
+    width: 100%;
+    background-color: #F5F5F5;
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius:0px 10px 10px 0px ;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.tab-item1.active{
+    border: 2px solid #F52D30;
+    background-color: #ffffff;
+
+}
+.tab-item2.active{
+    border: 2px solid #F52D30;
+    background-color: #ffffff;
+}
+.tab-item3.active{
+    border: 2px solid #F52D30;
+    background-color: #ffffff;
+}
+
+.university-stat-1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1500px;
+    width: 100%;
+}
+
+.university-stat-2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1700px;
+    width: 100%;
+}
+
+.university-stat-3{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1700px;
+    width: 100%;
+}
+
+.tab-content{
+    margin-top:50px;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.tab-content-item{
+    width: 800px;
+}
+
+
+.table{
+    border-radius: 10px;
+    max-width: 1650px;
+    padding: 25px;
+    width: 100%;
+    margin: 50px auto 100px;
+    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+}
+
+.link-table{
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+}
+
+.link-table:hover{
+    color: #F52D30;
+}
