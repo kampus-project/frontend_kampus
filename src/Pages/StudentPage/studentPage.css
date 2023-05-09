@@ -15,12 +15,10 @@
 
 
 .main-student-container{
-    max-width: 1600px;
-    width: 100%;
-    padding: 10px;
+    padding: 20px;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-direction: row;
 
     margin-right: auto;

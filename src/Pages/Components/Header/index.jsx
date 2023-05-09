@@ -1,15 +1,24 @@
 import React, {useState} from 'react';
 import './Header.css';
 import LogoutIcon from "@mui/icons-material/Logout.js";
+import {useLocalState} from "../../useLocalStorage/index.js";
 
 
 function Header() {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [jwt, setJwt] = useLocalState('', 'jwt')
+
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
+
+    const LogOut = () => {
+        setJwt(null)
+        window.location.href = "login"
+    }
+
 
     const handleOptionClick = () => {
         setIsOpen(false);
@@ -26,10 +35,9 @@ function Header() {
                         </button>
                         {isOpen && (
                             <div className="dropdown-menu" onClick={() => handleOptionClick()}>
-                                <button onClick={toggleDropdown} className="dropdown-item">
-                                    Выход
-                                </button>
-                                <LogoutIcon onClick={toggleDropdown} sx={{ fontSize: 15, marginRight:1, cursor: "pointer"}}/>
+                                <div onClick={toggleDropdown} >
+                                   <button className="dropdown-item" onClick={LogOut}> Выход <LogoutIcon onClick={toggleDropdown} sx={{ fontSize: 15, marginLeft:1, cursor: "pointer"}}/> </button>
+                                </div>
                             </div>
                         )}
                     </div>
