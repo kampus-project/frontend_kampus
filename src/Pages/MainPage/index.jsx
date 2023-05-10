@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './mainPage.css'
 import Header from "../Components/Header/index.jsx";
 import UniversityData from "../Components/Statistic/UniversityData/index.jsx";
@@ -17,6 +17,7 @@ import { DataRegistrationDependency } from "../Components/Statistic/Registration
 import { DataDirections } from "../Components/Statistic/Directions/Data.js";
 import { DataPaymentType} from "../Components/Statistic/PaymentType/Data.js";
 import { DataStudyingType } from "../Components/Statistic/StudyingType/Data.js";
+import {useLocalState} from "../useLocalStorage/index.js";
 
 function MainPage() {
 
@@ -146,7 +147,6 @@ function MainPage() {
                     </div>}
                 </div>
             </div>
-
             <div className="table">
                 <MainTable/>
             </div>

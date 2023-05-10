@@ -44,14 +44,12 @@ function StudentPage() {
             },
             method: "get",
         })
-            .then(response => {
-                response.json(),
-                console.log(response)
-            })
+            .then(response => {response.json()})
             .then(result => setStudentsData(result))
             .catch(error => console.error(error));
     }, []);
 
+    console.log(studentsData)
 
     return (
         <div>

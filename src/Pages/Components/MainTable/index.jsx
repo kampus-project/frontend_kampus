@@ -22,6 +22,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { rows } from "./Data.js";
+import {useLocalState} from "../../useLocalStorage/index.js";
+import {useEffect, useState} from "react";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -124,7 +126,7 @@ function EnhancedTableHead(props) {
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
+                        align='left'
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -331,6 +333,35 @@ export default function MainTable() {
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const [jwt, setJwt] = useLocalState('', 'jwt')
+
+    const [studentsData, setStudentsData] = useState([]);
+
+    useEffect(() => {
+        fetch(`${backendUrl}/api/v1/student/getAllStudents`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt,
+            },
+            method: "get",
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log("OK");
+                    return Promise.all([response.json(), response.headers]);
+                } else {
+                    return Promise.reject("Exception");
+                }
+            })
+            .then((result) => {
+                setStudentsData(result[0])
+            })
+            .catch(error => console.error(error));
+    }, []);
+
+    console.log(studentsData)
+
     return (
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
@@ -350,8 +381,8 @@ export default function MainTable() {
                             rowCount={rows.length}
                         />
                         <TableBody>
-                            {visibleRows
-                                ? visibleRows.map((row, index) => {
+                            {studentsData
+                                ? studentsData.map((row, index) => {
                                     const isItemSelected = isSelected(row.name);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -362,7 +393,7 @@ export default function MainTable() {
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={row.firstName}
                                             selected={isItemSelected}
                                             sx={{ cursor: 'pointer' }}
                                         >
@@ -380,13 +411,13 @@ export default function MainTable() {
                                                 id={labelId}
                                                 scope="row"
                                                 padding="none"
-                                            ><a href="/children" className="link-table">{row.name}</a></TableCell>
-                                            <TableCell align="right"><a href="/children" className="link-table">{row.course}</a></TableCell>
-                                            <TableCell align="right"><a href="/children" className="link-table">{row.university}</a></TableCell>
-                                            <TableCell align="right"><a href="/children" className="link-table">{row.institute}</a></TableCell>
-                                            <TableCell align="right"><a href="/children" className="link-table">{row.middleCount}</a></TableCell>
-                                            <TableCell align="right"><a href="/children" className="link-table">{row.studyForm}</a></TableCell>
-                                            <TableCell align="right"><a href="/children" className="link-table">{row.educationForm}</a></TableCell>
+                                            ><a href="/children" className="link-table">{row.firstName + ' ' + row.middleName + ' '+ row.lastName}</a></TableCell>
+                                            <TableCell align="left"><a href="/children" className="link-table">{row.courseNumber}</a></TableCell>
+                                            <TableCell align="left"><a href="/children" className="link-table">{row.universityName+"("+row.universityName +")"}</a></TableCell>
+                                            <TableCell align="left"><a href="/children" className="link-table">{row.courseTitle}</a></TableCell>
+                                            <TableCell align="left"><a href="/children" className="link-table">{row.middleCount}</a></TableCell>
+                                            <TableCell align="left"><a href="/children" className="link-table">{row.studyForm}</a></TableCell>
+                                            <TableCell align="left"><a href="/children" className="link-table">{row.educationForm}</a></TableCell>
                                         </TableRow>
                                     );
                                 })
