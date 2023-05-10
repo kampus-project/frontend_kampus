@@ -14,7 +14,7 @@ function App() {
                      <MainPage/>
                   </PrivateRoute>
               }/>
-              <Route path="children" element={
+              <Route path="/student/:id" element={
                   <PrivateRoute>
                     <StudentPage/>
                   </PrivateRoute>

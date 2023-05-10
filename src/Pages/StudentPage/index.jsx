@@ -6,21 +6,26 @@ import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import {useLocalState} from "../useLocalStorage/index.js";
+import {useParams} from "react-router-dom";
 
 
 function StudentPage() {
 
+    const { id } = useParams();
+
     const CssTextField = styled(TextField)({
-        width:"280px",
+        width:"290px",
+        marginTop:"10px",
+        marginBottom:"10px",
         '& label.Mui-focused': {
-            color: 'grey',
+            color: 'red',
         },
         '& .MuiInput-underline:after': {
-            borderBottomColor: 'grey',
+            borderBottomColor: 'red',
         },
         '& .MuiOutlinedInput-root': {
             '& fieldset': {
-                borderColor: 'grey',
+                borderColor: 'red',
             },
             '&:hover fieldset': {
                 borderColor: 'red',
@@ -31,26 +36,26 @@ function StudentPage() {
         },
     });
 
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const [jwt, setJwt] = useLocalState('', 'jwt')
 
+    const [student, setStudent] = useState([]);
 
-<<<<<<< HEAD
     useEffect(() => {
-        fetch(`${backendUrl}/api/v1/student/getAllStudents`, {
+        fetch(`${backendUrl}/api/v1/student/getStudent/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization" : 'Bearer ' + jwt,
             },
             method: "get",
         })
-            .then(response => {response.json()})
-            .then(result => setStudentsData(result))
+            .then((response) => response.json())
+            .then((data) => setStudent(data))
             .catch(error => console.error(error));
-    }, []);
-=======
+    }, [id])
 
->>>>>>> 600ce4a17d152e5feab1480caf523db694c06332
+    console.log(student)
 
-    console.log(studentsData)
 
     return (
         <div>
@@ -59,17 +64,16 @@ function StudentPage() {
                 <div className="main-student-container">
                     <div className="main-information">
                         <div className="main-info">
-                            <CssTextField label="Ф.И.О студента" size="small"
-                            />
-                            <CssTextField label="Курс"  size="small"/>
-                            <CssTextField label="Университет"  size="small"/>
-                            <CssTextField label="Институт"  size="small"/>
+                            <CssTextField label="Ф.И.О студента" size="small" value = {student.lastName + " " + student.firstName + " " + student.middleName}/>
+                            <CssTextField label="Курс"  size="small"  value = {student.courseNumber}/>
+                            <CssTextField label="Университет"  size="small"  value = {student.universityName}/>
+                            <CssTextField label="Институт"  size="small"  value = {student.universityName}/>
                         </div>
                         <div className="main-info">
-                            <CssTextField label="Направление"  size="small"/>
-                            <CssTextField label="Средний балл"  size="small"/>
-                            <CssTextField label="Форма обучения"  size="small"/>
-                            <CssTextField label="Форма обучения (оплата)"  size="small"/>
+                            <CssTextField label="Направление"  size="small" value={student.courseTitle}/>
+                            <CssTextField label="Средний балл"  size="small" value={student.averageGrade}/>
+                            <CssTextField label="Форма обучения"  size="small" value={student.educationForm}/>
+                            <CssTextField label="Форма обучения (оплата)"  size="small" value={student.trainingForm}/>
                         </div>
                         <div className="main-info">
                             <CssTextField label="Форма образования"  size="small"/>

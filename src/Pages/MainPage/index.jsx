@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import './mainPage.css'
 import Header from "../Components/Header/index.jsx";
 import UniversityData from "../Components/Statistic/UniversityData/index.jsx";
@@ -17,15 +17,10 @@ import { DataRegistrationDependency } from "../Components/Statistic/Registration
 import { DataDirections } from "../Components/Statistic/Directions/Data.js";
 import { DataPaymentType} from "../Components/Statistic/PaymentType/Data.js";
 import { DataStudyingType } from "../Components/Statistic/StudyingType/Data.js";
-import {useLocalState} from "../useLocalStorage/index.js";
 
 function MainPage() {
 
     const [activeTab, setActiveTab] = useState(0);
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const [jwt, setJwt] = useLocalState('', 'jwt')
-
-    const [studentsData, setStudentsData] = useState([]);
 
     const handleClick = (index) => {
         setActiveTab(index);
@@ -36,7 +31,7 @@ function MainPage() {
         datasets: [{
             label: "Количество учеников",
             data: DataUniversity.map((data)=>data.studentsQuantity),
-            backgroundColor:["#FF7272"]
+            backgroundColor:["#FF7272"],
         }]
     })
 
@@ -45,7 +40,8 @@ function MainPage() {
         datasets: [{
             label: "Количество учеников",
             data: DataUniversityInstitute.map((data)=>data.studentsQuantity),
-            backgroundColor:["#9AFA98"]
+            backgroundColor:["#9AFA98"],
+            fontFamily:"'Inter', sans-serif"
         }],
     })
 
@@ -54,7 +50,8 @@ function MainPage() {
         datasets: [{
             label: "Количество учеников",
             data: DataAllUsers.map((data)=>data.studentsQuantity),
-            backgroundColor:["#FF7272"]
+            backgroundColor:["#FF7272"],
+            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -63,7 +60,8 @@ function MainPage() {
         datasets: [{
             label: "Количество учеников",
             data: DataRegistrationDependency.map((data)=>data.users),
-            backgroundColor:["#FF7272","#F5F5F5"]
+            backgroundColor:["#FF7272","#F5F5F5"],
+            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -72,7 +70,8 @@ function MainPage() {
         datasets: [{
             label: "Количество учеников",
             data: DataDirections.map((data)=>data.studentsQuantity),
-            backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"]
+            backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"],
+            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -81,7 +80,8 @@ function MainPage() {
         datasets: [{
             label: "Количество учеников",
             data: DataPaymentType.map((data)=>data.studentsQuantity),
-            backgroundColor:["#FF7272","#FFF170","#9AFA98"]
+            backgroundColor:["#FF7272","#FFF170","#9AFA98"],
+            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -90,32 +90,10 @@ function MainPage() {
         datasets: [{
             label: "Количество учеников",
             data: DataStudyingType.map((data)=>data.studentsQuantity),
-            backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"]
+            backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"],
+            fontFamily:"'Inter', sans-serif"
         }]
     })
-
-    useEffect(() => {
-        fetch(`${backendUrl}/api/v1/student/getAllStudents`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization" : 'Bearer ' + jwt,
-            },
-            method: "get",
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    console.log("OK");
-                    return Promise.all([response.json(), response.headers]);
-                } else {
-                    return Promise.reject("Exception");
-                }
-            })
-            .then((result) => {
-                console.log(result[0])
-                setStudentsData(result[0])
-            })
-            .catch(error => console.error(error));
-    }, []);
 
     return (
         <div>
@@ -174,6 +152,7 @@ function MainPage() {
                     </div>}
                 </div>
             </div>
+
             <div className="table">
                 <MainTable/>
             </div>

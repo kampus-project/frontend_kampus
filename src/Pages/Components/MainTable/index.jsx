@@ -411,13 +411,13 @@ export default function MainTable() {
                                                 id={labelId}
                                                 scope="row"
                                                 padding="none"
-                                            ><a href="/children" className="link-table">{row.firstName + ' ' + row.middleName + ' '+ row.lastName}</a></TableCell>
-                                            <TableCell align="left"><a href="/children" className="link-table">{row.courseNumber}</a></TableCell>
-                                            <TableCell align="left"><a href="/children" className="link-table">{row.universityName+"("+row.universityName +")"}</a></TableCell>
-                                            <TableCell align="left"><a href="/children" className="link-table">{row.courseTitle}</a></TableCell>
-                                            <TableCell align="left"><a href="/children" className="link-table">{row.middleCount}</a></TableCell>
-                                            <TableCell align="left"><a href="/children" className="link-table">{row.studyForm}</a></TableCell>
-                                            <TableCell align="left"><a href="/children" className="link-table">{row.educationForm}</a></TableCell>
+                                            ><a href={`/student/${row.id}`} className="link-table">{row.firstName + ' ' + row.middleName + ' '+ row.lastName}</a></TableCell>
+                                            <TableCell align="left"><a href={`/children/${row.id}`}  className="link-table">{row.courseNumber}</a></TableCell>
+                                            <TableCell align="left"><a href={`/children/${row.id}`}  className="link-table">{row.universityName+"("+row.universityName +")"}</a></TableCell>
+                                            <TableCell align="left"><a href={`/children/${row.id}`}  className="link-table">{row.courseTitle}</a></TableCell>
+                                            <TableCell align="left"><a href={`/children/${row.id}`}  className="link-table">{row.averageGrade}</a></TableCell>
+                                            <TableCell align="left"><a href={`/children/${row.id}`}  className="link-table">{row.educationForm}</a></TableCell>
+                                            <TableCell align="left"><a href={`/children/${row.id}`}  className="link-table">{row.trainingForm}</a></TableCell>
                                         </TableRow>
                                     );
                                 })
