@@ -22,6 +22,10 @@ import {useLocalState} from "../useLocalStorage/index.js";
 function MainPage() {
 
     const [activeTab, setActiveTab] = useState(0);
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const [jwt, setJwt] = useLocalState('', 'jwt')
+
+    const [studentsData, setStudentsData] = useState([]);
 
     const handleClick = (index) => {
         setActiveTab(index);
@@ -89,6 +93,29 @@ function MainPage() {
             backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"]
         }]
     })
+
+    useEffect(() => {
+        fetch(`${backendUrl}/api/v1/student/getAllStudents`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt,
+            },
+            method: "get",
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log("OK");
+                    return Promise.all([response.json(), response.headers]);
+                } else {
+                    return Promise.reject("Exception");
+                }
+            })
+            .then((result) => {
+                console.log(result[0])
+                setStudentsData(result[0])
+            })
+            .catch(error => console.error(error));
+    }, []);
 
     return (
         <div>

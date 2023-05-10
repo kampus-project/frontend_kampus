@@ -31,11 +31,9 @@ function StudentPage() {
         },
     });
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const [jwt, setJwt] = useLocalState('', 'jwt')
 
-    const [studentsData, setStudentsData] = useState([]);
 
+<<<<<<< HEAD
     useEffect(() => {
         fetch(`${backendUrl}/api/v1/student/getAllStudents`, {
             headers: {
@@ -48,6 +46,9 @@ function StudentPage() {
             .then(result => setStudentsData(result))
             .catch(error => console.error(error));
     }, []);
+=======
+
+>>>>>>> 600ce4a17d152e5feab1480caf523db694c06332
 
     console.log(studentsData)
 
