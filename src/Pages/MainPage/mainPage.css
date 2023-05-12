@@ -121,10 +121,14 @@
 
 .link-table{
     text-decoration: none;
-    color: black;
     font-weight: 500;
+    padding: 6px 10px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
 }
 
 .link-table:hover{
-    color: #F52D30;
+    background-color: #F52D30;
+    transition: 0.2s;
 }

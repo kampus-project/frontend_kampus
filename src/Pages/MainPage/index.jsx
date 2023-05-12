@@ -21,8 +21,7 @@ import { DataStudyingType } from "../Components/Statistic/StudyingType/Data.js";
 function MainPage() {
 
     const [activeTab, setActiveTab] = useState(0);
-
-    const handleClick = (index) => {
+    const handleClickTab = (index) => {
         setActiveTab(index);
     };
 
@@ -41,7 +40,7 @@ function MainPage() {
             label: "Количество учеников",
             data: DataUniversityInstitute.map((data)=>data.studentsQuantity),
             backgroundColor:["#9AFA98"],
-            fontFamily:"'Inter', sans-serif"
+
         }],
     })
 
@@ -51,7 +50,6 @@ function MainPage() {
             label: "Количество учеников",
             data: DataAllUsers.map((data)=>data.studentsQuantity),
             backgroundColor:["#FF7272"],
-            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -61,7 +59,6 @@ function MainPage() {
             label: "Количество учеников",
             data: DataRegistrationDependency.map((data)=>data.users),
             backgroundColor:["#FF7272","#F5F5F5"],
-            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -71,7 +68,6 @@ function MainPage() {
             label: "Количество учеников",
             data: DataDirections.map((data)=>data.studentsQuantity),
             backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"],
-            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -81,7 +77,6 @@ function MainPage() {
             label: "Количество учеников",
             data: DataPaymentType.map((data)=>data.studentsQuantity),
             backgroundColor:["#FF7272","#FFF170","#9AFA98"],
-            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -91,7 +86,6 @@ function MainPage() {
             label: "Количество учеников",
             data: DataStudyingType.map((data)=>data.studentsQuantity),
             backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"],
-            fontFamily:"'Inter', sans-serif"
         }]
     })
 
@@ -102,19 +96,19 @@ function MainPage() {
                 <div className="tab-header">
                     <div
                         className={`tab-item1 ${activeTab === 0 ? "active" : ""}`}
-                        onClick={() => handleClick(0)}
+                        onClick={() => handleClickTab(0)}
                     >
                         Статистика регистрации на сервисе
                     </div>
                     <div
                         className={`tab-item2 ${activeTab === 1 ? "active" : ""}`}
-                        onClick={() => handleClick(1)}
+                        onClick={() => handleClickTab(1)}
                     >
                         Статистика по университетам
                     </div>
                     <div
                         className={`tab-item3 ${activeTab === 2 ? "active" : ""}`}
-                        onClick={() => handleClick(2)}
+                        onClick={() => handleClickTab(2)}
                     >
                         Преимущественные направления
                     </div>
