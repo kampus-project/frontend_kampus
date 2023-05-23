@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './mainPage.css'
 import Header from "../Components/Header/index.jsx";
 import UniversityData from "../Components/Statistic/UniversityData/index.jsx";
@@ -10,26 +10,82 @@ import PaymentType from "../Components/Statistic/PaymentType/index.jsx";
 import StudyingType from "../Components/Statistic/StudyingType/index.jsx";
 import MainTable from "../Components/MainTable/index.jsx";
 
-import { DataUniversity } from "../Components/Statistic/UniversityData/Data"
 import { DataUniversityInstitute } from "../Components/Statistic/UniversityInstituteData/Data.js";
-import { DataAllUsers } from "../Components/Statistic/AllUsersWeek/Data.js";
-import { DataRegistrationDependency } from "../Components/Statistic/RegistrationDependency/Data.js";
 import { DataDirections } from "../Components/Statistic/Directions/Data.js";
 import { DataPaymentType} from "../Components/Statistic/PaymentType/Data.js";
 import { DataStudyingType } from "../Components/Statistic/StudyingType/Data.js";
+import {useLocalState} from "../useLocalStorage/index.js";
+import {DataUniversity} from "../Components/Statistic/UniversityData/Data.js";
+
 
 function MainPage() {
+
+        const backendUrl = import.meta.env.VITE_BACKEND_URL;
+        const [jwt, setJwt] = useLocalState('', 'jwt')
+
+        const [allStudent,setAllStudent] = useLocalState([],'student')
+
+        useEffect(() => {
+            fetch(`${backendUrl}/api/v1/dynamicProgress/getAllDynamicProgress`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization" : 'Bearer ' + jwt,
+                },
+                method: "get",
+            })
+                .then((response) => response.json())
+                .then((data) => setAllStudent(data))
+                .catch(error => console.error(error));
+        }, [])
+
 
     const [activeTab, setActiveTab] = useState(0);
     const handleClickTab = (index) => {
         setActiveTab(index);
     };
 
-    const [universityData, setUniversityData] = useState({
-        labels: DataUniversity.map((data)=>data.universityName),
+    /*Первая страница с графиками*/
+
+    const [allUsers, setAllUsers] = useState({
+        labels: allStudent.map((data)=>data.progressDate),
         datasets: [{
             label: "Количество учеников",
-            data: DataUniversity.map((data)=>data.studentsQuantity),
+            data: allStudent.map((data)=>data.numberStudents),
+            backgroundColor:["#FF7272"],
+        }]
+    })
+
+    const [registrationDependency, setRegistrationDependency] = useState({
+        labels: allStudent.map((data)=>data.numberStudents),
+        datasets: [{
+            label: "Количество учеников",
+            data: allStudent.map((data)=>data.totalAmountScholarship),
+            backgroundColor:["#9AFA98"],
+        }]
+    })
+
+/*Вторая страница с графиками*/
+    const [universityStudents,setUniversityStudents] = useLocalState('','universityStudents')
+
+    useEffect(() => {
+        fetch(`${backendUrl}/api/v1/student/getInfoUniversities`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt,
+            },
+            method: "get",
+        })
+            .then((response) => response.json())
+            .then((data) => setUniversityStudents(data))
+            .catch(error => console.error(error));
+    }, [])
+
+
+    const [universityData, setUniversityData] = useState({
+        labels: DataUniversity.map((data)=>data.key),
+        datasets: [{
+            label: "Количество учеников",
+            data: DataUniversity.map((data)=>data.value),
             backgroundColor:["#FF7272"],
         }]
     })
@@ -44,23 +100,7 @@ function MainPage() {
         }],
     })
 
-    const [allUsers, setAllUsers] = useState({
-        labels: DataAllUsers.map((data)=>data.week),
-        datasets: [{
-            label: "Количество учеников",
-            data: DataAllUsers.map((data)=>data.studentsQuantity),
-            backgroundColor:["#FF7272"],
-        }]
-    })
-
-    const [registrationDependency, setRegistrationDependency] = useState({
-        labels: DataRegistrationDependency.map((data)=>data.status),
-        datasets: [{
-            label: "Количество учеников",
-            data: DataRegistrationDependency.map((data)=>data.users),
-            backgroundColor:["#FF7272","#F5F5F5"],
-        }]
-    })
+    /*Третья страница с графиками*/
 
     const [directions, setDirections] = useState({
         labels: DataDirections.map((data)=>data.direction),
@@ -119,7 +159,7 @@ function MainPage() {
                             <div className= "tab-content-item">
                                 <AllUsers chartDataAllUsers={allUsers}/>
                             </div>
-                            <div className= "tab-content-item" style={{width: 450}}>
+                            <div className= "tab-content-item">
                                 <RegistrationDependency chartDataRegistrationDependency={registrationDependency}/>
                             </div>
                         </div>}

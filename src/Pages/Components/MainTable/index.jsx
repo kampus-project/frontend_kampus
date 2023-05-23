@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {useLocalState} from "../../useLocalStorage/index.js";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom'
 
 const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'id', headerName: 'ID', width: 70, },
     {
         field: 'fullName',
         headerName: 'Ф.И.О',
@@ -20,7 +20,7 @@ const columns = [
             `${params.row.universityName || ''} (${params.row.universityName || ''}) `
     },
     { field: 'courseNumber', headerName: 'Курс', width: 130 },
-    { field: 'trainingForm', headerName: 'Вид обучения', width: 130 },
+    { field: 'studyForm', headerName: 'Вид обучения', width: 130 },
     { field: 'averageGrade', headerName: 'Ср.балл', width: 130 },
     { field: 'educationForm', headerName: 'Форма обучения', width: 130 },
     {
@@ -38,7 +38,7 @@ export default function DataTable() {
     const [jwt, setJwt] = useLocalState('', 'jwt')
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    const [studentsData, setStudentsData] = useState([]);
+    const [studentsData, setStudentsData] = useLocalState([],'studentsData');
 
     useEffect(() => {
         // Тут находится код, который должен выполниться только один раз при загрузке страницы
@@ -62,7 +62,7 @@ export default function DataTable() {
             })
             .catch(error => console.error(error));
     }, []);
-    console.log(studentsData)
+
 
     return (
         <>
