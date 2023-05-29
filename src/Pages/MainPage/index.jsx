@@ -67,18 +67,18 @@ function MainPage() {
 /*Вторая страница с графиками*/
     const [universityStudents,setUniversityStudents] = useLocalState('','universityStudents')
 
-    useEffect(() => {
-        fetch(`${backendUrl}/api/v1/student/getInfoUniversities`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization" : 'Bearer ' + jwt,
-            },
-            method: "get",
-        })
-            .then((response) => response.json())
-            .then((data) => setUniversityStudents(data))
-            .catch(error => console.error(error));
-    }, [])
+    // useEffect(() => {
+    //     fetch(`${backendUrl}/api/v1/student/getInfoUniversities`, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization" : 'Bearer ' + jwt,
+    //         },
+    //         method: "get",
+    //     })
+    //         .then((response) => response.json())
+    //         .then((data) => setUniversityStudents(data))
+    //         .catch(error => console.error(error));
+    // }, [])
 
 
     const [universityData, setUniversityData] = useState({
@@ -90,15 +90,28 @@ function MainPage() {
         }]
     })
 
+    useEffect(() => {
+        fetch(`${backendUrl}/api/v1/student/getInfoCourseTitle`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt,
+            },
+            method: "get",
+        })
+            .then((response) => response.json())
+            .then((data) => setUniversityStudents(data))
+            .catch(error => console.error(error));
+    }, [])
+
     const [instituteData, setInstituteData] = useState({
-        labels: DataUniversityInstitute.map((data)=>data.instituteName),
+        labels: DataUniversity.map((data)=>data.universityName),
         datasets: [{
             label: "Количество учеников",
-            data: DataUniversityInstitute.map((data)=>data.studentsQuantity),
+            data: DataUniversity.map((data)=>data.studentsQuantity),
             backgroundColor:["#9AFA98"],
-
         }],
     })
+
 
     /*Третья страница с графиками*/
 

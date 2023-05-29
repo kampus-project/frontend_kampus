@@ -53,7 +53,6 @@ function LoginPage() {
         <div>
             <div className="login-wrapper">
                 <form className="login-form" onSubmit={handleMainSubmit}>
-                    <h1>Djkfr2233</h1>
                     <div className="title-form"> Добро пожаловать!</div>
                     <div className="subtitle-form">Чтобы продолжить работу, пожалуйста, авторизуйтесь.</div>
                     <label className="label-form">
