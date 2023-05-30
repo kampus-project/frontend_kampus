@@ -1,0 +1,9 @@
+Dockerfile
+.idea/
+*.iml
+*.log
+
+node_modules/
+
+build/
+dist/

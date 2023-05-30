@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../Components/Header/index.jsx";
 import './studentPage.css'
-import Avatar from '@mui/material/Avatar';
-
-import { styled } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
 import {useLocalState} from "../useLocalStorage/index.js";
 import {useParams} from "react-router-dom";
 
@@ -13,28 +9,6 @@ function StudentPage() {
 
     const { id } = useParams();
 
-    const CssTextField = styled(TextField)({
-        width:"290px",
-        marginTop:"10px",
-        marginBottom:"10px",
-        '& label.Mui-focused': {
-            color: 'red',
-        },
-        '& .MuiInput-underline:after': {
-            borderBottomColor: 'red',
-        },
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: 'red',
-            },
-            '&:hover fieldset': {
-                borderColor: 'red',
-            },
-            '&.Mui-focused fieldset': {
-                borderColor: 'red',
-            },
-        },
-    });
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [jwt, setJwt] = useLocalState('', 'jwt')
@@ -53,44 +27,62 @@ function StudentPage() {
             .then((data) => setStudent(data))
             .catch(error => console.error(error));
     }, [id])
-
     console.log(student)
-
 
     return (
         <div>
             <Header/>
             <div className="wrapper-student">
                 <div className="main-student-container">
+                    <div className="title-student"> Информация о студенте</div>
                     <div className="main-information">
                         <div className="main-info">
-                            <CssTextField label="Ф.И.О студента" size="small" value = {student.lastName + " " + student.firstName + " " + student.middleName}/>
-                            <CssTextField label="Курс"  size="small"  value = {student.courseNumber}/>
-                            <CssTextField label="Университет"  size="small"  value = {student.universityName}/>
-                            <CssTextField label="Институт"  size="small"  value = {student.universityName}/>
+                            <label className="info-label">
+                                ФИО Студента
+                                <input type="text" value={student.lastName + " " + student.firstName} disabled/>
+                                <input type="text" value={student.middleName} disabled/>
+                            </label>
+                            <label className="info-label">
+                                Курс
+                                <input type="text" defaultValue={student.courseNumber} disabled/>
+                            </label>
+                            <label className="info-label">
+                                Название университета
+                                <input type="text"  defaultValue={student.universityName} disabled/>
+                            </label>
+                            <label  className="info-label">
+                                Название направления
+                                <input type="text"  defaultValue={student.courseTitle} disabled/>
+                            </label>
                         </div>
                         <div className="main-info">
-                            <CssTextField label="Направление"  size="small" value={student.courseTitle}/>
-                            <CssTextField label="Средний балл"  size="small" value={student.averageGrade}/>
-                            <CssTextField label="Форма обучения"  size="small" value={student.educationForm}/>
-                            <CssTextField label="Форма обучения (оплата)"  size="small" value={student.trainingForm}/>
+                            <label  className="info-label">
+                                Вид обучения
+                                <input type="text"  defaultValue={student.studyForm} disabled/>
+                            </label>
+                            <label  className="info-label">
+                                Форма обучения
+                                <input type="text"  defaultValue={student.educationForm} disabled/>
+                            </label>
+                            <label  className="info-label">
+                                Уровень обучения
+                                <input type="text"  defaultValue={student.typeHighEducation} disabled/>
+                            </label>
+                            <label  className="info-label">
+                                Средний балл
+                                <input type="text"  defaultValue={student.averageGrade} disabled/>
+                            </label>
                         </div>
                         <div className="main-info">
-                            <CssTextField label="Форма образования"  size="small"/>
-                            <CssTextField label="Стипендия"  size="small"/>
-                            <CssTextField label="Параметр"  size="small"/>
-                            <CssTextField label="Параметр"  size="small"/>
+                            колонка параметров 3
                         </div>
                         <div className="main-info">
-                            <CssTextField label="Параметр"  size="small"/>
-                            <CssTextField label="Параметр"  size="small"/>
-                            <CssTextField label="Параметр"  size="small"/>
-                            <CssTextField label="Параметр"  size="small"/>
+                            колонка параметров 4
                         </div>
                     </div>
                 </div>
                 <div className="sub-student-container">
-
+                    <div className="title-student"> Портфолио студента</div>
                 </div>
             </div>
         </div>
@@ -98,3 +90,7 @@ function StudentPage() {
 }
 
 export default StudentPage;
+
+/*
+
+* */

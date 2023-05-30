@@ -23,7 +23,7 @@ function MainPage() {
         const backendUrl = import.meta.env.VITE_BACKEND_URL;
         const [jwt, setJwt] = useLocalState('', 'jwt')
 
-        const [allStudent,setAllStudent] = useLocalState([],'student')
+        const [allDynamicProgress,setAllDynamicProgress] = useLocalState([],'allDynamicProgress')
 
         useEffect(() => {
             fetch(`${backendUrl}/api/v1/dynamicProgress/getAllDynamicProgress`, {
@@ -34,7 +34,7 @@ function MainPage() {
                 method: "get",
             })
                 .then((response) => response.json())
-                .then((data) => setAllStudent(data))
+                .then((data) => setAllDynamicProgress(data))
                 .catch(error => console.error(error));
         }, [])
 
@@ -43,32 +43,71 @@ function MainPage() {
     const handleClickTab = (index) => {
         setActiveTab(index);
     };
-
+    console.log(allDynamicProgress)
     /*Первая страница с графиками*/
 
     const [allUsers, setAllUsers] = useState({
-        labels: allStudent.map((data)=>data.progressDate),
+        labels: allDynamicProgress.map((data)=>data.progressDate),
         datasets: [{
             label: "Количество учеников",
-            data: allStudent.map((data)=>data.numberStudents),
+            data: allDynamicProgress.map((data)=>data.numberStudents),
             backgroundColor:["#FF7272"],
         }]
     })
 
     const [registrationDependency, setRegistrationDependency] = useState({
-        labels: allStudent.map((data)=>data.numberStudents),
+        labels: allDynamicProgress.map((data)=>data.numberStudents),
         datasets: [{
             label: "Количество учеников",
-            data: allStudent.map((data)=>data.totalAmountScholarship),
+            data: allDynamicProgress.map((data)=>data.totalAmountScholarship),
             backgroundColor:["#9AFA98"],
         }]
     })
 
 /*Вторая страница с графиками*/
-    const [universityStudents,setUniversityStudents] = useLocalState('','universityStudents')
+    const [allData,setAllData] = useLocalState([],'allData')
+
+<<<<<<< HEAD
+    useEffect(() => {
+        fetch(`${backendUrl}/api/v1/student/getAllData`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt,
+            },
+            method: "get",
+        })
+            .then((response) => response.json())
+            .then((data) => setAllData(data))
+            .catch(error => console.error(error));
+    }, [])
+    console.log(allData[1][1])
+=======
+    // useEffect(() => {
+    //     fetch(`${backendUrl}/api/v1/student/getInfoUniversities`, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization" : 'Bearer ' + jwt,
+    //         },
+    //         method: "get",
+    //     })
+    //         .then((response) => response.json())
+    //         .then((data) => setUniversityStudents(data))
+    //         .catch(error => console.error(error));
+    // }, [])
+>>>>>>> f01a055df604bd01667cfe382dc7f3a5fd3cd479
+
+
+    const [universityData, setUniversityData] = useState({
+        labels: allData[1][1].map((data)=>data.name),
+        datasets: [{
+            label: "Количество учеников",
+            data: allData[1][1].map((data)=>data.value),
+            backgroundColor:["#FF7272"],
+        }]
+    })
 
     useEffect(() => {
-        fetch(`${backendUrl}/api/v1/student/getInfoUniversities`, {
+        fetch(`${backendUrl}/api/v1/student/getInfoCourseTitle`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization" : 'Bearer ' + jwt,
@@ -80,25 +119,22 @@ function MainPage() {
             .catch(error => console.error(error));
     }, [])
 
-
-    const [universityData, setUniversityData] = useState({
-        labels: DataUniversity.map((data)=>data.key),
-        datasets: [{
-            label: "Количество учеников",
-            data: DataUniversity.map((data)=>data.value),
-            backgroundColor:["#FF7272"],
-        }]
-    })
-
     const [instituteData, setInstituteData] = useState({
-        labels: DataUniversityInstitute.map((data)=>data.instituteName),
+<<<<<<< HEAD
+        labels: allData[1][4].map((data)=>data.name),
         datasets: [{
             label: "Количество учеников",
-            data: DataUniversityInstitute.map((data)=>data.studentsQuantity),
+            data: allData[1][4].map((data)=>data.value),
+=======
+        labels: DataUniversity.map((data)=>data.universityName),
+        datasets: [{
+            label: "Количество учеников",
+            data: DataUniversity.map((data)=>data.studentsQuantity),
+>>>>>>> f01a055df604bd01667cfe382dc7f3a5fd3cd479
             backgroundColor:["#9AFA98"],
-
         }],
     })
+
 
     /*Третья страница с графиками*/
 
@@ -112,19 +148,19 @@ function MainPage() {
     })
 
     const [paymentType, setPaymentType] = useState({
-        labels: DataPaymentType.map((data)=>data.type),
+        labels: allData[1][2].map((data)=>data.name),
         datasets: [{
             label: "Количество учеников",
-            data: DataPaymentType.map((data)=>data.studentsQuantity),
+            data: allData[1][2].map((data)=>data.value),
             backgroundColor:["#FF7272","#FFF170","#9AFA98"],
         }]
     })
 
     const [studyingType, setStudyingType] = useState({
-        labels: DataStudyingType.map((data)=>data.type),
+        labels: allData[1][3].map((data)=>data.name),
         datasets: [{
             label: "Количество учеников",
-            data: DataStudyingType.map((data)=>data.studentsQuantity),
+            data: allData[1][3].map((data)=>data.value),
             backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"],
         }]
     })
