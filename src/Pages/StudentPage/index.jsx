@@ -40,7 +40,7 @@ function StudentPage() {
                             <label className="info-label">
                                 ФИО Студента
                                 <input type="text" value={student.lastName + " " + student.firstName} disabled/>
-                                <input type="text" value={student.middleName} disabled/>
+                                <input type="text" defaultValue={student.middleName} disabled/>
                             </label>
                             <label className="info-label">
                                 Курс

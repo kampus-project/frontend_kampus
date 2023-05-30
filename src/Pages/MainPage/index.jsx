@@ -67,7 +67,6 @@ function MainPage() {
 /*Вторая страница с графиками*/
     const [allData,setAllData] = useLocalState([],'allData')
 
-<<<<<<< HEAD
     useEffect(() => {
         fetch(`${backendUrl}/api/v1/student/getAllData`, {
             headers: {
@@ -81,20 +80,6 @@ function MainPage() {
             .catch(error => console.error(error));
     }, [])
     console.log(allData[1][1])
-=======
-    // useEffect(() => {
-    //     fetch(`${backendUrl}/api/v1/student/getInfoUniversities`, {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Authorization" : 'Bearer ' + jwt,
-    //         },
-    //         method: "get",
-    //     })
-    //         .then((response) => response.json())
-    //         .then((data) => setUniversityStudents(data))
-    //         .catch(error => console.error(error));
-    // }, [])
->>>>>>> f01a055df604bd01667cfe382dc7f3a5fd3cd479
 
 
     const [universityData, setUniversityData] = useState({
@@ -106,35 +91,15 @@ function MainPage() {
         }]
     })
 
-    useEffect(() => {
-        fetch(`${backendUrl}/api/v1/student/getInfoCourseTitle`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization" : 'Bearer ' + jwt,
-            },
-            method: "get",
-        })
-            .then((response) => response.json())
-            .then((data) => setUniversityStudents(data))
-            .catch(error => console.error(error));
-    }, [])
-
     const [instituteData, setInstituteData] = useState({
-<<<<<<< HEAD
         labels: allData[1][4].map((data)=>data.name),
         datasets: [{
             label: "Количество учеников",
             data: allData[1][4].map((data)=>data.value),
-=======
-        labels: DataUniversity.map((data)=>data.universityName),
-        datasets: [{
-            label: "Количество учеников",
-            data: DataUniversity.map((data)=>data.studentsQuantity),
->>>>>>> f01a055df604bd01667cfe382dc7f3a5fd3cd479
             backgroundColor:["#9AFA98"],
+
         }],
     })
-
 
     /*Третья страница с графиками*/
 
