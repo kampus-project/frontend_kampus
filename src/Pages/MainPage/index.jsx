@@ -10,12 +10,8 @@ import PaymentType from "../Components/Statistic/PaymentType/index.jsx";
 import StudyingType from "../Components/Statistic/StudyingType/index.jsx";
 import MainTable from "../Components/MainTable/index.jsx";
 
-import { DataUniversityInstitute } from "../Components/Statistic/UniversityInstituteData/Data.js";
 import { DataDirections } from "../Components/Statistic/Directions/Data.js";
-import { DataPaymentType} from "../Components/Statistic/PaymentType/Data.js";
-import { DataStudyingType } from "../Components/Statistic/StudyingType/Data.js";
 import {useLocalState} from "../useLocalStorage/index.js";
-import {DataUniversity} from "../Components/Statistic/UniversityData/Data.js";
 
 
 function MainPage() {
@@ -79,23 +75,22 @@ function MainPage() {
             .then((data) => setAllData(data))
             .catch(error => console.error(error));
     }, [])
-    console.log(allData[1][1])
 
 
     const [universityData, setUniversityData] = useState({
-        labels: allData[1][1].map((data)=>data.name),
+        labels: allData[1]?.[1]?.map((data)=>data.name),
         datasets: [{
             label: "Количество учеников",
-            data: allData[1][1].map((data)=>data.value),
+            data: allData[1]?.[1]?.map((data)=>data.value),
             backgroundColor:["#FF7272"],
         }]
     })
 
     const [instituteData, setInstituteData] = useState({
-        labels: allData[1][4].map((data)=>data.name),
+        labels: allData[1]?.[4]?.map((data)=>data.name),
         datasets: [{
             label: "Количество учеников",
-            data: allData[1][4].map((data)=>data.value),
+            data: allData[1]?.[4]?.map((data)=>data.value),
             backgroundColor:["#9AFA98"],
 
         }],
@@ -113,19 +108,19 @@ function MainPage() {
     })
 
     const [paymentType, setPaymentType] = useState({
-        labels: allData[1][2].map((data)=>data.name),
+        labels: allData[1]?.[2]?.map((data)=>data.name),
         datasets: [{
             label: "Количество учеников",
-            data: allData[1][2].map((data)=>data.value),
+            data: allData[1]?.[2]?.map((data)=>data.value),
             backgroundColor:["#FF7272","#FFF170","#9AFA98"],
         }]
     })
 
     const [studyingType, setStudyingType] = useState({
-        labels: allData[1][3].map((data)=>data.name),
+        labels: allData[1]?.[3]?.map((data)=>data.name),
         datasets: [{
             label: "Количество учеников",
-            data: allData[1][3].map((data)=>data.value),
+            data: allData[1]?.[3]?.map((data)=>data.value),
             backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"],
         }]
     })
