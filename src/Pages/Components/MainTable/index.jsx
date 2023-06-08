@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useLocalState} from "../../useLocalStorage/index.js";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom'
 
@@ -38,11 +38,12 @@ export default function DataTable() {
     const [jwt, setJwt] = useLocalState('', 'jwt')
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    const [studentsData, setStudentsData] = useLocalState([],'studentsData');
+    const [studentsData, setStudentsData] = useState([]);
 
     useEffect(() => {
         // Тут находится код, который должен выполниться только один раз при загрузке страницы
-        fetch(`${backendUrl}/api/v1/student/getAllStudents`, {
+        const fetchAllStudents = async () =>{
+        await fetch(`${backendUrl}/api/v1/student/getAllStudents`, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization" : 'Bearer ' + jwt,
@@ -61,7 +62,10 @@ export default function DataTable() {
                 setStudentsData(result[0])
             })
             .catch(error => console.error(error));
+    }
+    fetchAllStudents()
     }, []);
+    console.log(studentsData)
 
 
     return (

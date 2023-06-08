@@ -13,6 +13,7 @@ function LoginPage() {
 
         // send survey data to server
         const surveyMainData = {
+            username:'user',
             password,
         };
         console.log(surveyMainData);

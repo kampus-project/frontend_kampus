@@ -14,117 +14,141 @@ import { DataDirections } from "../Components/Statistic/Directions/Data.js";
 import {useLocalState} from "../useLocalStorage/index.js";
 
 
+
 function MainPage() {
-
-        const backendUrl = import.meta.env.VITE_BACKEND_URL;
-        const [jwt, setJwt] = useLocalState('', 'jwt')
-
-        const [allDynamicProgress,setAllDynamicProgress] = useLocalState([],'allDynamicProgress')
-
-        useEffect(() => {
-            fetch(`${backendUrl}/api/v1/dynamicProgress/getAllDynamicProgress`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization" : 'Bearer ' + jwt,
-                },
-                method: "get",
-            })
-                .then((response) => response.json())
-                .then((data) => setAllDynamicProgress(data))
-                .catch(error => console.error(error));
-        }, [])
-
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const [jwt, setJwt] = useLocalState('', 'jwt')
 
     const [activeTab, setActiveTab] = useState(0);
-    const handleClickTab = (index) => {
-        setActiveTab(index);
+
+    const handleClickTab = (tabNumber) => {
+        setActiveTab(tabNumber);
     };
-    console.log(allDynamicProgress)
-    /*Первая страница с графиками*/
 
-    const [allUsers, setAllUsers] = useState({
-        labels: allDynamicProgress.map((data)=>data.progressDate),
-        datasets: [{
-            label: "Количество учеников",
-            data: allDynamicProgress.map((data)=>data.numberStudents),
-            backgroundColor:["#FF7272"],
-        }]
-    })
-
-    const [registrationDependency, setRegistrationDependency] = useState({
-        labels: allDynamicProgress.map((data)=>data.numberStudents),
-        datasets: [{
-            label: "Количество учеников",
-            data: allDynamicProgress.map((data)=>data.totalAmountScholarship),
-            backgroundColor:["#9AFA98"],
-        }]
-    })
-
-/*Вторая страница с графиками*/
-    const [allData,setAllData] = useLocalState([],'allData')
+    const [allDynamicProgress, setAllDynamicProgress] = useState([]);
+    const [allUsers, setAllUsers] = useState(null);
+    const [registrationDependency, setRegistrationDependency] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${backendUrl}/api/v1/student/getAllData`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization" : 'Bearer ' + jwt,
-            },
-            method: "get",
-        })
-            .then((response) => response.json())
-            .then((data) => setAllData(data))
-            .catch(error => console.error(error));
-    }, [])
+        const fetchAllDynamicProgress = async () => {
+            try {
+                const response = await fetch(`${backendUrl}/api/v1/dynamicProgress/getAllDynamicProgress`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": 'Bearer ' + jwt,
+                    },
+                    method: "get",
+                });
+                const data = await response.json();
+                setAllDynamicProgress(data);
 
+                // Инициализируем allUsers и registrationDependency только после загрузки данных allDynamicProgress
+                const usersData = {
+                    labels: data.map((data) => data.progressDate),
+                    datasets: [{
+                        label: "Количество учеников",
+                        data: data.map((data) => data.numberStudents),
+                        backgroundColor: ["#FF7272"],
+                    }]
+                };
+                setAllUsers(usersData);
 
-    const [universityData, setUniversityData] = useState({
-        labels: allData[1]?.[1]?.map((data)=>data.name),
+                const dependencyData = {
+                    labels: data.map((data) => data.numberStudents),
+                    datasets: [{
+                        label: "Количество учеников",
+                        data: data.map((data) => data.totalAmountScholarship),
+                        backgroundColor: ["#9AFA98"],
+                    }]
+                };
+                setRegistrationDependency(dependencyData);
+
+                setIsLoading(false); // Устанавливаем isLoading в false, когда данные загружены
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchAllDynamicProgress();
+    }, []);
+
+/*Вторая страница с графиками*/
+    const [allData, setAllData] = useLocalState([], 'allData');
+
+    useEffect(() => {
+        const fetchAllData = async () => {
+            try {
+                const response = await fetch(`${backendUrl}/api/v1/student/getAllData`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": 'Bearer ' + jwt,
+                    },
+                    method: "get",
+                });
+                const data = await response.json();
+                setAllData(data);
+                setIsLoading(false); // Устанавливаем isLoading в false, когда данные загружены
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchAllData();
+    }, []);
+
+// Пока данные загружаются, можно отобразить сообщение о загрузке или что-то подобное
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    const universityData = {
+        labels: allData[1]?.[1]?.map((data) => data.name),
         datasets: [{
             label: "Количество учеников",
-            data: allData[1]?.[1]?.map((data)=>data.value),
-            backgroundColor:["#FF7272"],
+            data: allData[1]?.[1]?.map((data) => data.value),
+            backgroundColor: ["#FF7272"],
         }]
-    })
+    };
 
-    const [instituteData, setInstituteData] = useState({
-        labels: allData[1]?.[4]?.map((data)=>data.name),
+    const instituteData = {
+        labels: allData[1]?.[4]?.map((data) => data.name),
         datasets: [{
             label: "Количество учеников",
-            data: allData[1]?.[4]?.map((data)=>data.value),
-            backgroundColor:["#9AFA98"],
-
+            data: allData[1]?.[4]?.map((data) => data.value),
+            backgroundColor: ["#9AFA98"],
         }],
-    })
+    };
 
-    /*Третья страница с графиками*/
-
-    const [directions, setDirections] = useState({
-        labels: DataDirections.map((data)=>data.direction),
+    const directions = {
+        labels: DataDirections.map((data) => data.direction),
         datasets: [{
             label: "Количество учеников",
-            data: DataDirections.map((data)=>data.studentsQuantity),
-            backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"],
+            data: DataDirections.map((data) => data.studentsQuantity),
+            backgroundColor: ["#FF7272", "#FFF170", "#9AFA98", "#8C8AF6"],
         }]
-    })
+    };
 
-    const [paymentType, setPaymentType] = useState({
-        labels: allData[1]?.[2]?.map((data)=>data.name),
+    const paymentType = {
+        labels: allData[1]?.[2]?.map((data) => data.name),
         datasets: [{
             label: "Количество учеников",
-            data: allData[1]?.[2]?.map((data)=>data.value),
-            backgroundColor:["#FF7272","#FFF170","#9AFA98"],
+            data: allData[1]?.[2]?.map((data) => data.value),
+            backgroundColor: ["#FF7272", "#FFF170", "#9AFA98"],
         }]
-    })
+    };
 
-    const [studyingType, setStudyingType] = useState({
-        labels: allData[1]?.[3]?.map((data)=>data.name),
+    const studyingType = {
+        labels: allData[1]?.[3]?.map((data) => data.name),
         datasets: [{
             label: "Количество учеников",
-            data: allData[1]?.[3]?.map((data)=>data.value),
-            backgroundColor:["#FF7272","#FFF170","#9AFA98","#8C8AF6"],
+            data: allData[1]?.[3]?.map((data) => data.value),
+            backgroundColor: ["#FF7272", "#FFF170", "#9AFA98", "#8C8AF6"],
         }]
-    })
-
+    };
+    if (isLoading) {
+        return <div>Loading...</div>; // или отображение индикатора загрузки
+    }
     return (
         <div>
             <Header/>
