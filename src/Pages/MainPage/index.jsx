@@ -12,7 +12,8 @@ import MainTable from "../Components/MainTable/index.jsx";
 
 import { DataDirections } from "../Components/Statistic/Directions/Data.js";
 import {useLocalState} from "../useLocalStorage/index.js";
-
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 function MainPage() {
@@ -98,10 +99,6 @@ function MainPage() {
     }, []);
 
 // Пока данные загружаются, можно отобразить сообщение о загрузке или что-то подобное
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
     const universityData = {
         labels: allData[1]?.[1]?.map((data) => data.name),
         datasets: [{
@@ -147,7 +144,10 @@ function MainPage() {
         }]
     };
     if (isLoading) {
-        return <div>Loading...</div>; // или отображение индикатора загрузки
+        return(
+        <Box sx={{ width: '100%' }}>
+            <LinearProgress color="inherit"/>
+        </Box>); // или отображение индикатора загрузки
     }
     return (
         <div>
